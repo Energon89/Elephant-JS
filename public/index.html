@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>ELEPHANT JS</title>
+    <link rel="stylesheet" href="../src/style.css" />
+  </head>
+  <body>
+    <label for=""
+      >Select a 'input.txt' file with commands following the rules:</label
+    >
+    <ul>
+      <li>
+        <b>C w h</b> Create Canvas: Should create a new canvas of width w and
+        height h.
+      </li>
+
+      <li>
+        <b>L x1 y1 x2 y2</b> Create Line: Should create a new line from (x1,y1)
+        to (x2,y2). Currently only horizontal or vertical lines are supported.
+        Horizontal and vertical lines will be drawn using the 'x' character.
+      </li>
+
+      <li>
+        <b>R x1 y1 x2 y2</b> Create Rectangle: Should create a new rectangle,
+        whose upper left corner is (x1,y1) and lower right corner is (x2,y2).
+        Horizontal and vertical lines will be drawn using the 'x' character.
+      </li>
+
+      <li>
+        <b>B x y c</b> Bucket Fill: Should fill the entire area connected to
+        (x,y) with "colour" c. The behaviour of this is the same as that of the
+        "bucket fill" tool in paint programs.
+      </li>
+    </ul>
+    <br />
+    <form method="post" enctype="multipart/form-data">
+      <div>
+        <label for="fileupload">Select a file to upload</label>
+        <input
+          class="inputFile"
+          type="file"
+          accept="text/plain"
+          name="fileupload"
+          multiple
+        />
+      </div>
+      <div class="preview">
+        <p>No files currently selected for upload</p>
+      </div>
+      <div>
+        <button class="submit" type="button">Submit</button>
+      </div>
+    </form>
+    <script type="module" src="../src/modules/main.js"></script>
+  </body>
+</html>
