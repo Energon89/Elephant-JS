@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   };
 
-  inputFile.style.opacity = 0;
+  //inputFile.style.opacity = 0;
   inputFile.addEventListener("change", showTextDisplay);
   function showTextDisplay() {
     while (preview.firstChild) {
@@ -35,17 +35,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
       preview.appendChild(list);
       for (var i = 0; i < curFiles.length; i++) {
         let listItem = document.createElement("div");
-        let para = document.createElement("p");
+        //let para = document.createElement("p");
         if (validFileType(curFiles[i])) {
           let textFile = document.createElement("p");
-          para.textContent = "File name " + curFiles[i].name + ".";
+          //para.textContent = "File name " + curFiles[i].name + ".";
           let reader = new FileReader();
           reader.readAsText(curFiles[i]);
           reader.onload = function() {
             textFile.innerText = reader.result;
           };
 
-          listItem.appendChild(para);
+          //listItem.appendChild(para);
           listItem.appendChild(textFile);
         } else {
           para.textContent =
