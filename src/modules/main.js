@@ -2,7 +2,7 @@ import { DrawingToolInterpretor } from "./drawing_interpretator.js";
 
 document.addEventListener("DOMContentLoaded", function(event) {
   const draw = document.querySelector(".submit");
-  const inputFile = document.querySelector("input");
+  const inputFile = document.querySelector(".inputFile");
   const preview = document.querySelector(".preview");
 
   let reader = new FileReader();
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   };
 
-  //inputFile.style.opacity = 0;
+  inputFile.style.opacity = 0;
   inputFile.addEventListener("change", showTextDisplay);
   function showTextDisplay() {
     while (preview.firstChild) {
@@ -38,11 +38,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         //let para = document.createElement("p");
         if (validFileType(curFiles[i])) {
           let textFile = document.createElement("p");
+          const fileName = curFiles[i].name;
           //para.textContent = "File name " + curFiles[i].name + ".";
           let reader = new FileReader();
           reader.readAsText(curFiles[i]);
           reader.onload = function() {
-            textFile.innerText = reader.result;
+            textFile.innerText = `File name:  ${fileName}. 
+              ${reader.result}`;
           };
 
           //listItem.appendChild(para);
