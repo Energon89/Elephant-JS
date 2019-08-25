@@ -1,53 +1,56 @@
 import { DrawingToolInterpretor } from "./drawing_interpretator.js";
 
-document.addEventListener("DOMContentLoaded", function(event) {
-  const draw = document.querySelector(".submit");
-  const inputFile = document.querySelector(".inputFile");
-  const preview = document.querySelector(".preview");
+//Initialize DOM Element
+const htmlElements = {
+  draw: document.querySelector(".draw"),
+  inputFile: document.querySelector(".inputFile"),
+  preview: document.querySelector(".preview"),
+  saveButton: document.querySelector(".save")
+};
 
-  let reader = new FileReader();
+document.addEventListener("DOMContentLoaded", event => {
+  toggleButton();
+  let drawText = "";
+  const reader = new FileReader();
   reader.onload = function() {
-    let commandLine = reader.result;
+    const commandLine = reader.result;
     try {
-      let drawingInterpretor = new DrawingToolInterpretor(commandLine);
-      let drawText = drawingInterpretor.draw();
-      download(drawText, "output.txt");
+      const drawingInterpretor = new DrawingToolInterpretor(commandLine);
+      drawText = drawingInterpretor.draw();
       console.log(drawText);
     } catch (event) {
       alert(event);
     }
   };
 
-  inputFile.style.opacity = 0;
-  inputFile.addEventListener("change", showTextDisplay);
-  function showTextDisplay() {
-    while (preview.firstChild) {
-      preview.removeChild(preview.firstChild);
-    }
+  htmlElements.inputFile.classList.add("hidden");
+  htmlElements.inputFile.addEventListener("change", selectFile);
 
-    let curFiles = inputFile.files;
+  //select the input file and render DOM elements
+  function selectFile() {
+    while (htmlElements.preview.firstChild) {
+      htmlElements.preview.removeChild(htmlElements.preview.firstChild);
+    }
+    const curFiles = htmlElements.inputFile.files;
     if (curFiles.length === 0) {
       let para = document.createElement("p");
       para.textContent = "No files currently selected for upload";
-      preview.appendChild(para);
+      htmlElements.preview.appendChild(para);
     } else {
-      let list = document.createElement("ol");
-      preview.appendChild(list);
-      for (var i = 0; i < curFiles.length; i++) {
-        let listItem = document.createElement("div");
-        //let para = document.createElement("p");
+      const list = document.createElement("ol");
+      htmlElements.preview.appendChild(list);
+      //it is possible to select multiple files for drawing, but only the first selected will draw
+      for (let i = 0; i < curFiles.length; i++) {
+        const listItem = document.createElement("div");
         if (validFileType(curFiles[i])) {
-          let textFile = document.createElement("p");
+          const textFile = document.createElement("p");
           const fileName = curFiles[i].name;
-          //para.textContent = "File name " + curFiles[i].name + ".";
-          let reader = new FileReader();
+          const reader = new FileReader();
           reader.readAsText(curFiles[i]);
           reader.onload = function() {
             textFile.innerText = `File name:  ${fileName}. 
               ${reader.result}`;
           };
-
-          //listItem.appendChild(para);
           listItem.appendChild(textFile);
         } else {
           para.textContent =
@@ -56,35 +59,42 @@ document.addEventListener("DOMContentLoaded", function(event) {
             ": Not a valid file type. Update your selection.";
           listItem.appendChild(para);
         }
-
         list.appendChild(listItem);
       }
     }
+    toggleButton();
   }
 
   const fileTypes = ["text/txt", "text/plain"];
 
   function validFileType(file) {
-    for (var i = 0; i < fileTypes.length; i++) {
+    for (let i = 0; i < fileTypes.length; i++) {
       if (file.type === fileTypes[i]) {
         return true;
       }
     }
-
     return false;
   }
 
-  draw.addEventListener(
+  htmlElements.draw.addEventListener(
     "click",
-    function() {
-      reader.readAsText(inputFile.files[0]);
+    () => {
+      reader.readAsText(htmlElements.inputFile.files[0]);
+    },
+    false
+  );
+  htmlElements.saveButton.addEventListener(
+    "click",
+    () => {
+      download(drawText, "output.txt");
     },
     false
   );
 });
 
+//save text in a file
 function download(text, filename) {
-  let file = new Blob([text], { type: "text/plain" });
+  const file = new Blob([text], { type: "text/plain" });
   if (window.navigator.msSaveOrOpenBlob)
     // IE10+
     window.navigator.msSaveOrOpenBlob(file, filename);
@@ -96,9 +106,20 @@ function download(text, filename) {
     a.download = filename;
     document.body.appendChild(a);
     a.click();
-    setTimeout(function() {
+    setTimeout(() => {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     }, 0);
+  }
+}
+
+//disabled buttons when file is not selected
+function toggleButton() {
+  if (htmlElements.inputFile.value) {
+    htmlElements.saveButton.removeAttribute("disabled");
+    htmlElements.draw.removeAttribute("disabled");
+  } else {
+    htmlElements.draw.setAttribute("disabled", "true");
+    htmlElements.saveButton.setAttribute("disabled", "true");
   }
 }

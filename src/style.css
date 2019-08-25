@@ -51,3 +51,7 @@ form button:active {
   background-color: #0d3f8f;
   color: white;
 }
+
+.hidden {
+  opacity: 0;
+}
