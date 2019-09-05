@@ -33,9 +33,9 @@ document.addEventListener("DOMContentLoaded", event => {
     }
     const curFiles = htmlElements.inputFile.files;
     if (curFiles.length === 0) {
-      let para = document.createElement("p");
-      para.textContent = "No files currently selected for upload";
-      htmlElements.preview.appendChild(para);
+      let paragraph = document.createElement("p");
+      paragraph.textContent = "No files currently selected for upload";
+      htmlElements.preview.appendChild(paragraph);
     } else {
       const list = document.createElement("ol");
       htmlElements.preview.appendChild(list);
@@ -53,11 +53,12 @@ document.addEventListener("DOMContentLoaded", event => {
           };
           listItem.appendChild(textFile);
         } else {
-          para.textContent =
+          let paragraph = document.createElement("p");
+          paragraph.textContent =
             "File name " +
             curFiles[i].name +
             ": Not a valid file type. Update your selection.";
-          listItem.appendChild(para);
+          listItem.appendChild(paragraph);
         }
         list.appendChild(listItem);
       }
